@@ -8,7 +8,6 @@
 // Simple Vertex Shader
 const char* vertexShaderSource = R"(
 // an ultra simple hlsl vertex shader
-// TODO: Part 2b
 
 struct SHADER_VARS
 {
@@ -16,14 +15,10 @@ struct SHADER_VARS
 	matrix view;
 };
 [[vk::push_constant]] ConstantBuffer<SHADER_VARS> ob;
-// TODO: Part 2f, Part 3b
-// TODO: Part 1c
 float4 main(float4 inputVertex : POSITION) : SV_POSITION
 {
-	// TODO: Part 2d
 	inputVertex = mul(ob.wm, inputVertex);
 	inputVertex = mul(ob.view, inputVertex);
-	// TODO: Part 2f, Part 3b
 	return float4(inputVertex);
 }
 )";
@@ -32,7 +27,7 @@ const char* pixelShaderSource = R"(
 // an ultra simple hlsl pixel shader
 float4 main() : SV_TARGET 
 {	
-	return float4(0.89f ,0.34f, 0.14f, 0); // TODO: Part 1a
+	return float4(0.89f ,0.34f, 0.14f, 0);
 }
 )";
 // Creation, Rendering & Cleanup
@@ -42,17 +37,17 @@ class Renderer
 	GW::SYSTEM::GWindow win;
 	GW::GRAPHICS::GVulkanSurface vlk;
 	GW::CORE::GEventReceiver shutdown;
-	// TODO: Part 4a
+	
 	GW::INPUT::GInput gin;
 	GW::INPUT::GController gcon;
 	const float Camera_Speed = 0.03f;
-	// TODO: Part 2a
+	
 	GW::MATH::GMatrix matrixmath;
-	// TODO: Part 3d
+	
 	GW::MATH::GMATRIXF world[6] = { { 0 },{ 0 },{ 0 },{ 0 },{ 0 },{ 0 } };
-	// TODO: Part 2e
+	
 	GW::MATH::GMATRIXF view = { 0 };
-	// TODO: Part 3a
+	
 	GW::MATH::GMATRIXF proj = { 0 };
 	// what we need at a minimum to draw a triangle
 	VkDevice device = nullptr;
@@ -64,11 +59,11 @@ class Renderer
 	VkPipeline pipeline = nullptr;
 	VkPipelineLayout pipelineLayout = nullptr;
 public:
-	// TODO: Part 1c
+	
 	struct Vertex { float x, y, z, w; };
-	// TODO: Part 2b
+	
 	struct SHADER_VARS { GW::MATH::GMATRIXF wm, view; };
-	// TODO: Part 2f
+	
 	Renderer(GW::SYSTEM::GWindow _win, GW::GRAPHICS::GVulkanSurface _vlk)
 	{
 		win = _win;
@@ -76,13 +71,13 @@ public:
 		unsigned int width, height;
 		win.GetClientWidth(width);
 		win.GetClientHeight(height);
-		// TODO: Part 4a
+		
 		gin.Create(win);
 		gcon.Create();
-		// TODO: Part 2a
+		
 		matrixmath.Create();
 
-		// TODO: Part 3d
+		
 		matrixmath.IdentityF(world[0]);
 		matrixmath.TranslateGlobalF(world[0], GW::MATH::GVECTORF { 0, -0.5f, 0, 0 }, world[0]);
 		matrixmath.RotateXGlobalF(world[0], Deg2Rad(90), world[0]);
@@ -106,7 +101,7 @@ public:
 		matrixmath.TranslateGlobalF(world[5], GW::MATH::GVECTORF { 0, 0.5f, 0, 0 }, world[5]);
 		matrixmath.RotateXGlobalF(world[5], Deg2Rad(-90), world[5]);
 
-		// TODO: Part 2e
+		
 		GW::MATH::GVECTORF eye { 0 }, at { 0 };
 		matrixmath.IdentityF(view);
 		matrixmath.TranslateGlobalF(view, GW::MATH::GVECTORF { 0.25f, -0.125f, -0.25f, 0 }, view);
@@ -121,32 +116,8 @@ public:
 		vlk.GetDevice((void**)&device);
 		vlk.GetPhysicalDevice((void**)&physicalDevice);
 
-		// TODO: Part 1b	//	can also use LINE_STRIP instead of LINE_LIST, then there's no need to update the verts data
-		// TODO: Part 1c
 		// Create Vertex Buffer
-		/*float verts[] = {
-			   0,   0.5f,
-			 0.5f, -0.5f,
-			-0.5f, -0.5f
-		};*/	//	Original
-		/*float verts[] = {
-			0,   0.5f,
-			0.5f, -0.5f,
-			0.5f, -0.5f,
-			-0.5f, -0.5f,
-			-0.5f, -0.5f,
-			0, 0.5f
-		};*/	//	Part 1B
-		/*Vertex verts[] = {
-			{0, 0.5f, 0, 1},
-			{0.5f, -0.5f, 0, 1},
-			{0.5f, -0.5f, 0, 1},
-			{-0.5f, -0.5f, 0, 1},
-			{-0.5f, -0.5f, 0, 1},
-			{0, 0.5f, 0, 1}
-		};*/	//	Part 1C
 		std::vector<Vertex> verts;
-		// TODO: Part 1d
 		for (float i = -0.5f, count = 0; count < 26; i = i + 0.04f, ++count) {
 			verts.push_back(Vertex {i, 0.5f, 0, 1});
 			verts.push_back(Vertex {i, -0.5f, 0, 1});
@@ -165,7 +136,6 @@ public:
 		shaderc_compiler_t compiler = shaderc_compiler_initialize();
 		shaderc_compile_options_t options = shaderc_compile_options_initialize();
 		shaderc_compile_options_set_source_language(options, shaderc_source_language_hlsl);
-		// TODO: Part 3C
 		shaderc_compile_options_set_invert_y(options, false);
 #ifndef NDEBUG
 		shaderc_compile_options_set_generate_debug_info(options);
@@ -213,12 +183,11 @@ public:
 		assembly_create_info.topology = VK_PRIMITIVE_TOPOLOGY_LINE_LIST;	//	can also use LINE_STRIP instead, without changing verts (Part 1B)
 		assembly_create_info.primitiveRestartEnable = false;
 		// Vertex Input State
-		// TODO: Part 1c
 		VkVertexInputBindingDescription vertex_binding_description = {};
 		vertex_binding_description.binding = 0;
 		vertex_binding_description.stride = sizeof(Vertex) * 1;
 		vertex_binding_description.inputRate = VK_VERTEX_INPUT_RATE_VERTEX;
-		// TODO: Part 1c
+		
 		VkVertexInputAttributeDescription vertex_attribute_description[1] = {
 			{ 0, 0, VK_FORMAT_R32G32B32A32_SFLOAT, 0 } //uv, normal, etc....
 		};
@@ -300,15 +269,15 @@ public:
 		dynamic_create_info.sType = VK_STRUCTURE_TYPE_PIPELINE_DYNAMIC_STATE_CREATE_INFO;
 		dynamic_create_info.dynamicStateCount = 2;
 		dynamic_create_info.pDynamicStates = dynamic_state;
-		// TODO: Part 2c
+		
 		VkPushConstantRange range { VkShaderStageFlagBits::VK_SHADER_STAGE_VERTEX_BIT, 0, sizeof(SHADER_VARS) };
 		// Descriptor pipeline layout
 		VkPipelineLayoutCreateInfo pipeline_layout_create_info = {};
 		pipeline_layout_create_info.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
 		pipeline_layout_create_info.setLayoutCount = 0;
 		pipeline_layout_create_info.pSetLayouts = VK_NULL_HANDLE;
-		pipeline_layout_create_info.pushConstantRangeCount = 1; // TODO: Part 2d 
-		pipeline_layout_create_info.pPushConstantRanges = &range; // TODO: Part 2d
+		pipeline_layout_create_info.pushConstantRangeCount = 1;
+		pipeline_layout_create_info.pPushConstantRanges = &range;
 		vkCreatePipelineLayout(device, &pipeline_layout_create_info, 
 			nullptr, &pipelineLayout);
 	    // Pipeline State... (FINALLY) 
@@ -358,36 +327,24 @@ public:
 		vkCmdSetViewport(commandBuffer, 0, 1, &viewport);
 		vkCmdSetScissor(commandBuffer, 0, 1, &scissor);
 		vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, pipeline);
-		// TODO: Part 3a
+		
 		//matrixmath.IdentityF(proj);
 		float aspectRatio = 0;
 		vlk.GetAspectRatio(aspectRatio);
 		matrixmath.ProjectionVulkanLHF(Deg2Rad(65), aspectRatio, 0.1, 100, proj);
 		
-		// TODO: Part 3b
-		// TODO: Part 2b
 		SHADER_VARS sv { { 0 }, view };
-		// TODO: Part 2f, Part 3b
 		matrixmath.MultiplyMatrixF(sv.view, proj, sv.view);
-		// TODO: Part 2d
 		VkDeviceSize offsets[] = { 0 };
 		vkCmdBindVertexBuffers(commandBuffer, 0, 1, &vertexHandle, offsets);
 		for (int i = 0; i < 6; ++i) {
 			sv.wm = world[i];
-			// TODO: Part 3e
 			vkCmdPushConstants(commandBuffer, pipelineLayout, VK_SHADER_STAGE_VERTEX_BIT, 0, sizeof(SHADER_VARS), &sv);
 			// now we can draw
-			vkCmdDraw(commandBuffer, 104, 1, 0, 0); // TODO: Part 1b vertexCount = 6 // TODO: Part 1c vertexCount = 6
-			// Part 1D vertexCount = 104
+			vkCmdDraw(commandBuffer, 104, 1, 0, 0);
 		}
 	}
-	// TODO: Part 4b
-	// TODO: Part 4c
-	// TODO: Part 4d
-	// TODO: Part 4e
-	// TODO: Part 4f
-	// TODO: Part 4g
-	// TODO: Part 4c
+	
 	void UpdateCamera() {
 		static std::chrono::steady_clock::time_point t1, t2;
 		t2 = std::chrono::steady_clock::now();

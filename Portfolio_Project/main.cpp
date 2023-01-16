@@ -7,9 +7,9 @@
 #define GATEWARE_DISABLE_GDIRECTX12SURFACE // we have another template for this
 #define GATEWARE_DISABLE_GRASTERSURFACE // we have another template for this
 #define GATEWARE_DISABLE_GOPENGLSURFACE // we have another template for this
-// TODO: Part 2a
+
 #define GATEWARE_ENABLE_MATH // Enable Gateware’s built-in math library
-// TODO: Part 4a
+
 #define GATEWARE_ENABLE_INPUT
 // With what we want & what we don't defined we can include the API
 #include "../Gateware/Gateware.h"
@@ -19,19 +19,41 @@ using namespace GW;
 using namespace CORE;
 using namespace SYSTEM;
 using namespace GRAPHICS;
+
+bool ParseModels(const char* fileName) {
+	std::string line;
+	std::ifstream fis(fileName);
+
+	if (fis.fail()) return false;
+
+	while (!fis.eof()) {
+		std::getline(fis, line);
+		if (0 != line.compare("MESH")) continue;
+		std::cout << line << std::endl;
+		for (int i = 0; i < 5; ++i) {
+			std::getline(fis, line);
+			std::cout << line << std::endl;
+		}
+		std::cout << std::endl;
+	}
+
+	return true;
+}
+
 // lets pop a window and use Vulkan to clear to a red screen
 int main()
 {
+	if (!ParseModels("../GameLevel.txt")) return 0;
+	else system("pause");
 	GWindow win;
 	GEventResponder msgs;
 	GVulkanSurface vulkan;
 	if (+win.Create(0, 0, 800, 600, GWindowStyle::WINDOWEDBORDERED))
 	{
-		// TODO: Part 1a
-		win.SetWindowName("Daniel Ben Zvi - Assignment 1 - Vulkan");
+		win.SetWindowName("Daniel Ben Zvi - 3DCC Project");
 
 		VkClearValue clrAndDepth[2];
-		clrAndDepth[0].color = { {0.27f, 0.27f, 0.27f, 1} }; // TODO: Part 1a
+		clrAndDepth[0].color = { {0.27f, 0.27f, 0.27f, 1} };
 		clrAndDepth[1].depthStencil = { 1.0f, 0u };
 		msgs.Create([&](const GW::GEvent& e) {
 			GW::SYSTEM::GWindow::Events q;
@@ -76,7 +98,6 @@ int main()
 			{
 				if (+vulkan.StartFrame(2, clrAndDepth))
 				{
-					// TODO: Part 4b
 					renderer.UpdateCamera();
 					renderer.Render();
 					vulkan.EndFrame(true);
