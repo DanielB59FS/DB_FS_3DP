@@ -14,37 +14,38 @@
 // With what we want & what we don't defined we can include the API
 #include "../Gateware/Gateware.h"
 #include "renderer.h"
+#include <regex>
 // open some namespaces to compact the code a bit
 using namespace GW;
 using namespace CORE;
 using namespace SYSTEM;
 using namespace GRAPHICS;
 
-bool ParseModels(const char* fileName) {
-	std::string line;
-	std::ifstream fis(fileName);
-
-	if (fis.fail()) return false;
-
-	while (!fis.eof()) {
-		std::getline(fis, line);
-		if (0 != line.compare("MESH")) continue;
-		std::cout << line << std::endl;
-		for (int i = 0; i < 5; ++i) {
-			std::getline(fis, line);
-			std::cout << line << std::endl;
-		}
-		std::cout << std::endl;
-	}
-
-	return true;
-}
-
 // lets pop a window and use Vulkan to clear to a red screen
 int main()
 {
-	if (!ParseModels("../GameLevel.txt")) return 0;
-	else system("pause");
+	/*std::string derp;
+	std::string* derp2 = &derp;
+	scanf("%s", &derp);
+	printf("%s\n", derp);
+	printf("%p\n%p\n%p\n", &derp, derp.c_str(), derp2);
+	return 0;*/
+	//return 0;
+	//std::string subject1 = "<Matrix 4x4 (1.0000, 0.0000,   0.0000, 0.0000)\n",
+	//	subject2 = "            (0.0000, 1.0000,  -0.0000, 0.0000)\n", pattern = "\1bcd";
+	//float x = -1, y = -1, z = -1, w = -1;
+	//std::regex rgx (pattern, std::regex::ECMAScript | std::regex::icase);
+	//std::cmatch match;
+	////std::regex_match("<Matrix 4x4 (1.0000, 0.0000,   0.0000, 0.0000)\n", match, rgx);
+	////std::regex_search("12 243 46 76 32", match, rgx);
+	//std::regex_match("abcd", match, rgx);
+	//std::cout << "matches:\n";
+	//for (int i = 0; i < match.size(); ++i)
+	//	std::cout << match[i] << std::endl;
+	//return 0;
+	//H2B::Parser h2bParser;
+	//h2bParser.Parse("../Assets/bomb.h2b");
+	//return 0;
 	GWindow win;
 	GEventResponder msgs;
 	GVulkanSurface vulkan;
@@ -71,21 +72,7 @@ int main()
 			//"VK_LAYER_LUNARG_standard_validation", // add if not on MacOS		//	is Deprecated
 			"VK_LAYER_RENDERDOC_Capture" // add this if you have installed RenderDoc
 		};
-		/*for (const char* name : debugLayers) {
-			bool found = false;
-			uint32_t layerCount;
-			vkEnumerateInstanceLayerProperties(&layerCount, nullptr);
 
-			std::vector<VkLayerProperties> availableLayers(layerCount);
-			vkEnumerateInstanceLayerProperties(&layerCount, availableLayers.data());
-
-			for (const auto& layerProperties : availableLayers) {
-				if (strcmp(name, layerProperties.layerName) == 0) {
-					found = true;
-					break;
-				}
-			}
-		}*/	//	delete
 		if (+vulkan.Create(	win, GW::GRAPHICS::DEPTH_BUFFER_SUPPORT, 
 							sizeof(debugLayers)/sizeof(debugLayers[0]),
 							debugLayers, 0, nullptr, 0, nullptr, false))
@@ -94,11 +81,12 @@ int main()
 #endif
 		{
 			Renderer renderer(win, vulkan);
+			//if (!renderer.ParseLevel("../GameLevel.txt")) return 0;
 			while (+win.ProcessWindowEvents())
 			{
 				if (+vulkan.StartFrame(2, clrAndDepth))
 				{
-					renderer.UpdateCamera();
+					renderer.Update();
 					renderer.Render();
 					vulkan.EndFrame(true);
 				}

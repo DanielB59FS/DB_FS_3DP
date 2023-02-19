@@ -81,10 +81,10 @@ namespace H2B {
 			for (int i = 0; i < materialCount; ++i) {
 				file.read(reinterpret_cast<char*>(&materials[i].attrib), 80);
 				for (int j = 0; j < 10; ++j) {
-					buffer[0] = '\0';
+					buffer[0] = '/0';
 					*((&materials[i].name) + j) = nullptr;
-					file.getline(buffer, 260, '\0');
-					if (buffer[0] != '\0') {
+					file.getline(buffer, 260, '/0');
+					if (buffer[0] != '/0') {
 						auto last = file_strings.insert(buffer);
 						*((&materials[i].name) + j) = last.first->c_str();
 					}
@@ -94,10 +94,10 @@ namespace H2B {
 			file.read(reinterpret_cast<char*>(batches.data()), 8 * materialCount);
 			meshes.resize(meshCount);
 			for (int i = 0; i < meshCount; ++i) {
-				buffer[0] = '\0';
+				buffer[0] = '/0';
 				meshes[i].name = nullptr;
-				file.getline(buffer, 260, '\0');
-				if (buffer[0] != '\0') {
+				file.getline(buffer, 260, '/0');
+				if (buffer[0] != '/0') {
 					auto last = file_strings.insert(buffer);
 					meshes[i].name = last.first->c_str();
 				}
