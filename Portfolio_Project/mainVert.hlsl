@@ -28,7 +28,7 @@ struct SHADER_MODEL_DATA
 struct SHADER_VARS
 {
 	float3 camPos;
-	uint mesh_ID;
+	uint mat_ID;
 	float4 sunAmbient;
 	int padding[24];
 };

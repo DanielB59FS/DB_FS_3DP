@@ -26,7 +26,7 @@ struct SHADER_MODEL_DATA
 struct SHADER_VARS
 {
 	float3 camPos;
-	uint mesh_ID;
+	uint mat_ID;
 	float4 sunAmbient;
 	int padding[24];
 };
@@ -50,14 +50,14 @@ float4 main(V_IN args) : SV_TARGET
 	float3 halfVector = normalize(normalize(-SceneData[0].sunDirection.xyz) + viewDir);
 	float3 reflectVector = normalize(reflect(SceneData[0].sunDirection.xyz,nrmW));
 	
-	float intensity = max(pow(clamp(dot(nrmW, halfVector), 0, 1), SceneData[0].materials[VARS.mesh_ID].Ns), 0);
+	float intensity = max(pow(clamp(dot(nrmW, halfVector), 0, 1), SceneData[0].materials[VARS.mat_ID].Ns), 0);
 	
 	//float intensity = saturate(dot(viewDir, reflectVector));
-	//intensity = saturate(pow(intensity,SceneData[0].materials[mesh_ID].Ns));
+	//intensity = saturate(pow(intensity,SceneData[0].materials[mat_ID].Ns));
 	
-	float4 reflectedLight = SceneData[0].sunColor * float4(SceneData[0].materials[VARS.mesh_ID].Ks, 1) * intensity;
+	float4 reflectedLight = SceneData[0].sunColor * float4(SceneData[0].materials[VARS.mat_ID].Ks, 1) * intensity;
 	
-	float4 res = saturate(lightRatio * SceneData[0].sunColor + VARS.sunAmbient) * float4(SceneData[0].materials[VARS.mesh_ID].Kd, SceneData[0].materials[VARS.mesh_ID].d) + reflectedLight;
+	float4 res = saturate(lightRatio * SceneData[0].sunColor + VARS.sunAmbient) * float4(SceneData[0].materials[VARS.mat_ID].Kd, SceneData[0].materials[VARS.mat_ID].d) + reflectedLight;
 	
 	return res;
 }

@@ -15,149 +15,141 @@
 #include "LevelData.h"
 
 // Simple Vertex Shader
-const char* vertexShaderSource = "";
-//const char* vertexShaderSource = R"(
-//// TODO: 2i
-//#pragma pack_matrix(row_major)
-//// an ultra simple hlsl vertex shader
-//// TODO: Part 2b
-//#define MAX_SUBMESH_PER_DRAW 1024
-//struct OBJ_ATTRIBUTES {
-//	float3		Kd;			// diffuse reflectivity
-//	float		d;			// dissolve (transparency)
-//	float3		Ks;			// specular reflectivity
-//	float		Ns;			// specular exponent
-//	float3		Ka;			// ambient reflectivity
-//	float		sharpness;	// local reflection map sharpness
-//	float3		Tf;			// transmission filter
-//	float		Ni;			// optical density (index of refraction)
-//	float3		Ke;			// emissive reflectivity
-//	uint		illum;		// illumination model
-//};
-//struct SHADER_MODEL_DATA {
-//	float4 sunDirection, sunColor;
-//	float4x4 viewMatrix, projectionMatrix;
-//	float4x4 matricies[MAX_SUBMESH_PER_DRAW];
-//	OBJ_ATTRIBUTES materials[MAX_SUBMESH_PER_DRAW];
-//};
-//[[vk::binding(0)]] StructuredBuffer<SHADER_MODEL_DATA> SceneData;
-//// TODO: Part 4g
-//// TODO: Part 2i
-//// TODO: Part 3e
-//struct SHADER_VARS
-//{
-//    float3 camPos;
-//    uint mesh_ID;
-//    float4 sunAmbient;
-//    int padding[24];
-//};
-//[[vk::push_constant]] ConstantBuffer<SHADER_VARS> VARS;
-//// TODO: Part 4a
-//// TODO: Part 1f
-//// TODO: Part 4b
-//struct V_IN {
-//	float3 inputVertex : POSITION;
-//	float3 uvw : TEXCOORD;
-//	float3 nrm : NORMAL;
-//};
-//struct V_OUT {
-//	float4 posH : SV_POSITION;
-//	float3 uvW : TEXCOORD;
-//	float3 nrmW : NORMAL;
-//	float3 posW : WORLD;
-//};
-////V_OUT main(float3 inputVertex : POSITION, float3 uvw : TEXCOORD, float3 nrm : NORMAL, uint vertexInstanceID : SV_INSTANCEID) : SV_POSITION
-//V_OUT main(V_IN inputs, uint vertexInstanceID : SV_INSTANCEID)
-//{
-//    V_OUT send = (V_OUT)0;
-//    //send.posH = mul(mul(inputVertex, SceneData[0].matricies[VARS.mesh_ID]), mul(SceneData[0].viewMatrix, SceneData[0].projectionMatrix));
-//    send.posH = mul(float4(inputs.inputVertex,1), SceneData[0].matricies[VARS.mesh_ID]);
-//    send.posW = send.posH.xyz;
-//	send.posH = mul(send.posH, SceneData[0].viewMatrix);
-//	send.posH = mul(send.posH, SceneData[0].projectionMatrix);
-//	// TODO: Part 1h
-//	// TODO: Part 2i
-//		// TODO: Part 4e
-//	// TODO: Part 4b
-//		// TODO: Part 4e
-//	send.uvW = inputs.uvw;
-//	send.nrmW = mul(inputs.nrm, SceneData[0].matricies[VARS.mesh_ID]).xyz;
-//	return send;
-//}
-//)";
+//const char* vertexShaderSource = "";
+const char* vertexShaderSource = R"(
+#pragma pack_matrix(row_major)
+
+#define MAX_SUBMESH_PER_DRAW 1024
+
+struct OBJ_ATTRIBUTES
+{
+	float3 Kd;			// diffuse reflectivity
+	float d;			// dissolve (transparency)
+	float3 Ks;			// specular reflectivity
+	float Ns;			// specular exponent
+	float3 Ka;			// ambient reflectivity
+	float sharpness;	// local reflection map sharpness
+	float3 Tf;			// transmission filter
+	float Ni;			// optical density (index of refraction)
+	float3 Ke;			// emissive reflectivity
+	uint illum;			// illumination model
+};
+
+struct SHADER_MODEL_DATA
+{
+	float4 sunDirection, sunColor;
+	float4x4 viewMatrix, projectionMatrix;
+	float4x4 matricies[MAX_SUBMESH_PER_DRAW];
+	OBJ_ATTRIBUTES materials[MAX_SUBMESH_PER_DRAW];
+};
+[[vk::binding(0)]] StructuredBuffer<SHADER_MODEL_DATA> SceneData;
+
+struct SHADER_VARS
+{
+	float3 camPos;
+	uint mat_ID;
+	float4 sunAmbient;
+	int padding[24];
+};
+[[vk::push_constant]] ConstantBuffer<SHADER_VARS> VARS;
+
+struct V_IN
+{
+	float3 inputVertex : POSITION;
+	float3 uvw : TEXCOORD;
+	float3 nrm : NORMAL;
+};
+
+struct V_OUT
+{
+	float4 posH : SV_POSITION;
+	float3 uvW : TEXCOORD;
+	float3 nrmW : NORMAL;
+	float3 posW : WORLD;
+};
+
+V_OUT main(V_IN inputs, uint instanceID : SV_INSTANCEID)
+{
+	V_OUT send = (V_OUT) 0;
+    
+	send.posH = mul(float4(inputs.inputVertex, 1), SceneData[0].matricies[instanceID]);
+	send.posW = send.posH.xyz;
+	send.posH = mul(send.posH, SceneData[0].viewMatrix);
+	send.posH = mul(send.posH, SceneData[0].projectionMatrix);
+	send.uvW = inputs.uvw;
+	send.nrmW = mul(inputs.nrm, SceneData[0].matricies[instanceID]).xyz;
+	
+	return send;
+}
+)";
 
 // Simple Pixel Shader
-const char* pixelShaderSource = "";
-//const char* pixelShaderSource = R"(
-//// TODO: Part 2b
-//#define MAX_SUBMESH_PER_DRAW 1024
-//struct OBJ_ATTRIBUTES {
-//	float3		Kd;			// diffuse reflectivity
-//	float		d;			// dissolve (transparency)
-//	float3		Ks;			// specular reflectivity
-//	float		Ns;			// specular exponent
-//	float3		Ka;			// ambient reflectivity
-//	float		sharpness;	// local reflection map sharpness
-//	float3		Tf;			// transmission filter
-//	float		Ni;			// optical density (index of refraction)
-//	float3		Ke;			// emissive reflectivity
-//	uint		illum;		// illumination model
-//};
-//struct SHADER_MODEL_DATA {
-//	float4 sunDirection, sunColor;
-//	float4x4 viewMatrix, projectionMatrix;
-//	float4x4 matricies[MAX_SUBMESH_PER_DRAW];
-//	OBJ_ATTRIBUTES materials[MAX_SUBMESH_PER_DRAW];
-//};
-//[[vk::binding(0)]] StructuredBuffer<SHADER_MODEL_DATA> SceneData;
-//// TODO: Part 4g
-//// TODO: Part 2i
-//// TODO: Part 3e
-//[[vk::push_constant]]
-//cbuffer SHADER_VARS {
-//	float3 camPos;
-//	uint mesh_ID;
-//	float4 sunAmbient;
-//	int padding[24];
-//};
-//struct V_OUT {
-//	float4 posH : SV_POSITION;
-//	float3 uvW : TEXCOORD;
-//	float3 nrmW : NORMAL;
-//	float3 posW : WORLD;
-//};
-//// an ultra simple hlsl pixel shader
-//// TODO: Part 4b
-////float4 main(float4 posH : SV_POSITION, float3 uvW : TEXCOORD, float3 nrmW2 : NORMAL, float3 posW : WORLD, uint vertexInstanceID : SV_INSTANCEID) : SV_TARGET 
-//float4 main(V_OUT stuff, uint vertexInstanceID : SV_INSTANCEID) : SV_TARGET 
-//{	
-//	//return float4(0.89f ,0.34f, 0.14f, 0); // TODO: Part 1a
-//
-//	float3 nrmW = normalize(stuff.nrmW);
-//	float lightRatio = clamp(dot(-SceneData[0].sunDirection.xyz,nrmW),0,1);
-//	
-//	float3 viewDir = normalize(camPos - stuff.posW);
-//	
-//	float3 halfVector = normalize(normalize(-SceneData[0].sunDirection) + viewDir);
-//	//float3 halfVector = normalize(reflect(SceneData[0].sunDirection.xyz,nrmW));
-//	
-//	float intensity = max(pow(clamp(dot(nrmW, halfVector),0,1),SceneData[0].materials[mesh_ID].Ns), 0);
-//	//float intensity = max(pow(clamp(dot(viewDir, halfVector),0,1),SceneData[0].materials[mesh_ID].Ns), 0);
-//	
-//	//float intensity = saturate(dot(viewDir, halfVector));
-//	//intensity = saturate(pow(intensity,SceneData[0].materials[mesh_ID].Ns));
-//	
-//	float4 reflectedLight = SceneData[0].sunColor * float4(SceneData[0].materials[mesh_ID].Ks,1) * intensity;
-//	
-//	float4 res = saturate(lightRatio*SceneData[0].sunColor + sunAmbient) * float4(SceneData[0].materials[mesh_ID].Kd, SceneData[0].materials[mesh_ID].d) + reflectedLight;
-//	
-//	return res;
-//
-//	// TODO: Part 3a
-//	// TODO: Part 4c
-//	// TODO: Part 4g (half-vector or reflect method your choice)
-//}
-//)";
+//const char* pixelShaderSource = "";
+const char* pixelShaderSource = R"(
+#define MAX_SUBMESH_PER_DRAW 1024
+
+struct OBJ_ATTRIBUTES
+{
+	float3 Kd;			// diffuse reflectivity
+	float d;			// dissolve (transparency)
+	float3 Ks;			// specular reflectivity
+	float Ns;			// specular exponent
+	float3 Ka;			// ambient reflectivity
+	float sharpness;	// local reflection map sharpness
+	float3 Tf;			// transmission filter
+	float Ni;			// optical density (index of refraction)
+	float3 Ke;			// emissive reflectivity
+	uint illum;			// illumination model
+};
+
+struct SHADER_MODEL_DATA
+{
+	float4 sunDirection, sunColor;
+	float4x4 viewMatrix, projectionMatrix;
+	float4x4 matricies[MAX_SUBMESH_PER_DRAW];
+	OBJ_ATTRIBUTES materials[MAX_SUBMESH_PER_DRAW];
+};
+[[vk::binding(0)]] StructuredBuffer<SHADER_MODEL_DATA> SceneData;
+
+struct SHADER_VARS
+{
+	float3 camPos;
+	uint mat_ID;
+	float4 sunAmbient;
+	int padding[24];
+};
+[[vk::push_constant]] ConstantBuffer<SHADER_VARS> VARS;
+
+struct V_IN
+{
+	float4 posH : SV_POSITION;
+	float3 uvW : TEXCOORD;
+	float3 nrmW : NORMAL;
+	float3 posW : WORLD;
+};
+
+float4 main(V_IN args) : SV_TARGET
+{
+	float3 nrmW = normalize(args.nrmW);
+	float lightRatio = clamp(dot(-SceneData[0].sunDirection.xyz, nrmW), 0, 1);
+	
+	float3 viewDir = normalize(VARS.camPos - args.posW);
+	
+	float3 halfVector = normalize(normalize(-SceneData[0].sunDirection.xyz) + viewDir);
+	float3 reflectVector = normalize(reflect(SceneData[0].sunDirection.xyz,nrmW));
+	
+	float intensity = max(pow(clamp(dot(nrmW, halfVector), 0, 1), SceneData[0].materials[VARS.mat_ID].Ns), 0);
+	
+	//float intensity = saturate(dot(viewDir, reflectVector));
+	//intensity = saturate(pow(intensity,SceneData[0].materials[mat_ID].Ns));
+	
+	float4 reflectedLight = SceneData[0].sunColor * float4(SceneData[0].materials[VARS.mat_ID].Ks, 1) * intensity;
+	
+	float4 res = saturate(lightRatio * SceneData[0].sunColor + VARS.sunAmbient) * float4(SceneData[0].materials[VARS.mat_ID].Kd, SceneData[0].materials[VARS.mat_ID].d) + reflectedLight;
+	
+	return res;
+}
+)";
 
 // Load a shader file as a string of characters.
 std::string ShaderAsString(const char* shaderFilePath) {
@@ -237,7 +229,7 @@ class Renderer {
 public:
 	struct SHADER_VARS {
 		OBJ_VEC3 camPos;
-		unsigned int mesh_ID;
+		unsigned int mat_ID;
 		GW::MATH::GVECTORF sunAmbient;
 		int padding[24];
 	};
@@ -306,10 +298,8 @@ public:
 	void CreateStorageBuffer(unsigned int& maxFrames, VkPhysicalDevice physicalDevice) {
 		memcpy(smd.matricies, dataOrientedLoader.levelTransforms.data(), min(MAX_SUBMESH_PER_DRAW, dataOrientedLoader.levelTransforms.size()) * sizeof(GW::MATH::GMATRIXF));
 		
-		for (size_t i = 0; i < min(MAX_SUBMESH_PER_DRAW, dataOrientedLoader.levelMaterials.size()); ++i) {
+		for (size_t i = 0; i < min(MAX_SUBMESH_PER_DRAW, dataOrientedLoader.levelMaterials.size()); ++i)
 			smd.materials[i] = dataOrientedLoader.levelMaterials[i].attrib;
-			smd.materials[i].d = 0.5;
-		}
 
 		vlk.GetSwapchainImageCount(maxFrames);
 		storageHandle.resize(maxFrames);
@@ -812,14 +802,26 @@ public:
 		matrixmath.GetTranslationF(smd.viewMatrix, translation);
 		OBJ_VEC3 camPos = { 0.75f, 0.25f, -1.5f };
 
+		SHADER_VARS vars { camPos, 0, { 0.25f,0.25f,0.35f,1 }, { 0 } };
+		
 		for (auto instance : dataOrientedLoader.levelInstances) {
-			size_t j = instance.modelIndex;
+			LevelData::LEVEL_MODEL& model = dataOrientedLoader.levelModels[instance.modelIndex];
 			
-			SHADER_VARS vars { camPos, dataOrientedLoader.levelModels[j].materialStart, { 0.25f,0.25f,0.35f,1 }, { 0 } };
+			vars.mat_ID = model.materialStart;
 
 			vkCmdPushConstants(commandBuffer, pipelineLayout, VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_FRAGMENT_BIT, 0, sizeof(SHADER_VARS), &vars);
 
-			vkCmdDrawIndexed(commandBuffer, dataOrientedLoader.levelModels[j].indexCount, instance.transformCount, dataOrientedLoader.levelModels[j].indexStart, dataOrientedLoader.levelModels[j].vertexStart, instance.transformStart);
+			vkCmdDrawIndexed(commandBuffer, model.indexCount, instance.transformCount, model.indexStart, model.vertexStart, instance.transformStart);
+
+			//	planned solution for submesh material drawing:
+			//for (size_t i = model.meshStart; i < model.meshStart + model.meshCount; ++i) {
+			//	vars.mat_ID = dataOrientedLoader.levelMeshes[i].materialIndex;
+
+			//	vkCmdPushConstants(commandBuffer, pipelineLayout, VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_FRAGMENT_BIT, 0, sizeof(SHADER_VARS), &vars);
+			//	
+			//	//vkCmdDrawIndexed(commandBuffer, dataOrientedLoader.levelMeshes[i].drawInfo.indexCount, instance.transformCount, dataOrientedLoader.levelMeshes[i].drawInfo.indexOffset, model.vertexStart, instance.transformStart);
+			//	vkCmdDrawIndexed(commandBuffer, dataOrientedLoader.levelMeshes[i].drawInfo.indexCount, instance.transformCount, dataOrientedLoader.levelMeshes[i].drawInfo.indexOffset, model.vertexStart, instance.transformStart);
+			//}
 		}
 	}
 
