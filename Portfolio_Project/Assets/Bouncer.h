@@ -21,11 +21,11 @@ const unsigned Bouncer_indexcount = 1536;
 #define _Bouncer_indexcount_
 #endif
 #ifndef _Bouncer_materialcount_
-const unsigned Bouncer_materialcount = 1; // can be used for batched draws
+const unsigned Bouncer_materialcount = 2; // can be used for batched draws
 #define _Bouncer_materialcount_
 #endif
 #ifndef _Bouncer_meshcount_
-const unsigned Bouncer_meshcount = 1;
+const unsigned Bouncer_meshcount = 2;
 #define _Bouncer_meshcount_
 #endif
 /************************************************/
@@ -1143,20 +1143,42 @@ typedef struct _OBJ_MATERIAL_
 #endif
 #ifndef _Bouncer_materials_
 // Material Data follows: pulled from a .mtl file of the same name if present.
-const OBJ_MATERIAL Bouncer_materials[1] =
+const OBJ_MATERIAL Bouncer_materials[2] =
 {
 	{
-		{{ 0.600000f, 0.600000f, 0.600000f },
+		{{ 0.143087f, 0.143087f, 0.143087f },
 		1.000000f,
-		{ 0.200000f, 0.200000f, 0.200000f },
-		500.000000f,
+		{ 0.500000f, 0.500000f, 0.500000f },
+		96.078430f,
 		{ 1.000000f, 1.000000f, 1.000000f },
 		60.000000f,
 		{ 1.000000f, 1.000000f, 1.000000f },
-		1.500000f,
+		1.000000f,
 		{ 0.000000f, 0.000000f, 0.000000f },
 		2},
-		"default",
+		"Metal",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+	},
+	{
+		{{ 0.219062f, 0.041810f, 0.039528f },
+		1.000000f,
+		{ 0.500000f, 0.500000f, 0.500000f },
+		96.078430f,
+		{ 1.000000f, 1.000000f, 1.000000f },
+		60.000000f,
+		{ 1.000000f, 1.000000f, 1.000000f },
+		1.000000f,
+		{ 0.000000f, 0.000000f, 0.000000f },
+		2},
+		"Red",
 		"",
 		"",
 		"",
@@ -1178,9 +1200,10 @@ const OBJ_MATERIAL Bouncer_materials[1] =
 // Each entry corresponds to the same entry in the materials array above.
 // The two numbers provided are the IndexCount and the IndexOffset into the indices array.
 // If you need more fine grained control(ex: for transformations) use the OBJ_MESH data below.
-const unsigned int Bouncer_batches[1][2] =
+const unsigned int Bouncer_batches[2][2] =
 {
-	{ 1536, 0 },
+	{ 1164, 0 },
+	{ 372, 1164 },
 };
 #define _Bouncer_batches_
 #endif
@@ -1197,13 +1220,19 @@ typedef struct _OBJ_MESH_
 #ifndef _Bouncer_meshes_
 // Mesh Data follows: Meshes are .obj groups sorted & split by material.
 // Meshes are provided in sequential order, sorted by material first and name second.
-const OBJ_MESH Bouncer_meshes[1] =
+const OBJ_MESH Bouncer_meshes[2] =
 {
 	{
 		"default",
-		1536,
+		1164,
 		0,
 		0,
+	},
+	{
+		"default",
+		372,
+		1164,
+		1,
 	},
 };
 #define _Bouncer_meshes_

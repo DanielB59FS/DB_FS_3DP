@@ -34,12 +34,7 @@ const unsigned FSLogo_meshcount = 2;
 #ifndef __OBJ_VEC3__
 typedef struct _OBJ_VEC3_
 {
-	union {
-		struct {
-			float x,y,z; // 3D Coordinate.
-		};
-		float data[3];
-	};
+	float x,y,z; // 3D Coordinate.
 }OBJ_VEC3;
 #define __OBJ_VEC3__
 #endif

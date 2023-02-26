@@ -39,19 +39,19 @@ SOFTWARE.
 static_assert(sizeof(void*) == 8, "Gateware supports x64 platforms only.");
 
 // The Major version is auto-generated based on the current year.
-#define GATEWARE_MAJOR 22
+#define GATEWARE_MAJOR 23
 // The Minor version is auto-generated based on the current day of the year.
-#define GATEWARE_MINOR 296
+#define GATEWARE_MINOR 7
 // The Patch version is auto-generated based on the current UTC hour of the day.
-#define GATEWARE_PATCH 20
+#define GATEWARE_PATCH 0
 // Pulled directly from GIT  
 #define GATEWARE_BRANCH "master"
 // Pulled directly from GIT
-#define GATEWARE_COMMIT_HASH 0x636b27d
+#define GATEWARE_COMMIT_HASH 0x4111c4c
 // Standard Window Title Bar
-#define GATEWARE_VERSION_STRING "Gateware v22.296.20"
+#define GATEWARE_VERSION_STRING "Gateware v23.7.0"
 // Window Title Bar displayed in DEBUG builds
-#define GATEWARE_VERSION_STRING_LONG "Gateware v22.296.20 (master) [636b27d]"
+#define GATEWARE_VERSION_STRING_LONG "Gateware v23.7.0 (master) [4111c4c]"
 
 #endif
 
@@ -10005,7 +10005,6 @@ namespace GW
 #include <iostream>
 #include <condition_variable>
 
-#define MAX_QUEUE_SIZE 20
 #define THREAD_SLEEP_TIME 1
 #define TIME_BUFFER 40
 
@@ -10121,13 +10120,6 @@ namespace GW
 				//Lock the mutex to push the new message.
 				queueLock.lock();
 
-				//Check to see if we are at our max messages.
-				if (logQueue.size() >= MAX_QUEUE_SIZE)
-				{
-					queueLock.unlock();
-					return GW::GReturn::FAILURE;
-				}
-
 				//Push the message to the queue.
 				logQueue.push(logStream.str());
 
@@ -10169,13 +10161,6 @@ namespace GW
 				//Lock the mutex to push the new msg.
 				queueLock.lock();
 
-				//Check to see if we are at our max messages.
-				if (logQueue.size() >= MAX_QUEUE_SIZE)
-				{
-					queueLock.unlock();
-					return GW::GReturn::FAILURE;
-				}
-
 				//Push the message to the queue.
 				logQueue.push(logStream.str());
 
@@ -10211,7 +10196,6 @@ namespace GW
 	} //end namespace I
 } // end namespace GW
 
-#undef MAX_QUEUE_SIZE
 #undef THREAD_SLEEP_TIME
 #undef TIME_BUFFER
 
@@ -10230,7 +10214,6 @@ namespace GW
 #include <iostream>
 #include <condition_variable>
 
-#define MAX_QUEUE_SIZE 20
 #define THREAD_SLEEP_TIME 1
 #define TIME_BUFFER 40
 
@@ -10347,13 +10330,6 @@ namespace GW
 				//Lock the mutex to push the new message.
 				queueLock.lock();
 
-				//Check to see if we are at our max messages.
-				if (logQueue.size() >= MAX_QUEUE_SIZE)
-				{
-					queueLock.unlock();
-					return GW::GReturn::FAILURE;
-				}
-
 				//Push the message to the queue.
 				logQueue.push(logStream.str());
 
@@ -10397,13 +10373,6 @@ namespace GW
 				//Lock the mutex to push the new msg.
 				queueLock.lock();
 
-				//Check to see if we are at our max messages.
-				if (logQueue.size() >= MAX_QUEUE_SIZE)
-				{
-					queueLock.unlock();
-					return GW::GReturn::FAILURE;
-				}
-
 				//Push the message to the queue.
 				logQueue.push(logStream.str());
 
@@ -10440,7 +10409,6 @@ namespace GW
 	} //end namespace I
 } // end namespace GW
 
-#undef MAX_QUEUE_SIZE
 #undef THREAD_SLEEP_TIME
 #undef TIME_BUFFER
 
@@ -11284,19 +11252,19 @@ namespace internal_gw
 static_assert(sizeof(void*) == 8, "Gateware supports x64 platforms only.");
 
 // The Major version is auto-generated based on the current year.
-#define GATEWARE_MAJOR 22
+#define GATEWARE_MAJOR 23
 // The Minor version is auto-generated based on the current day of the year.
-#define GATEWARE_MINOR 296
+#define GATEWARE_MINOR 7
 // The Patch version is auto-generated based on the current UTC hour of the day.
-#define GATEWARE_PATCH 20
+#define GATEWARE_PATCH 0
 // Pulled directly from GIT  
 #define GATEWARE_BRANCH "master"
 // Pulled directly from GIT
-#define GATEWARE_COMMIT_HASH 0x636b27d
+#define GATEWARE_COMMIT_HASH 0x4111c4c
 // Standard Window Title Bar
-#define GATEWARE_VERSION_STRING "Gateware v22.296.20"
+#define GATEWARE_VERSION_STRING "Gateware v23.7.0"
 // Window Title Bar displayed in DEBUG builds
-#define GATEWARE_VERSION_STRING_LONG "Gateware v22.296.20 (master) [636b27d]"
+#define GATEWARE_VERSION_STRING_LONG "Gateware v23.7.0 (master) [4111c4c]"
 
 #endif
 
@@ -12658,19 +12626,19 @@ namespace internal_gw
 static_assert(sizeof(void*) == 8, "Gateware supports x64 platforms only.");
 
 // The Major version is auto-generated based on the current year.
-#define GATEWARE_MAJOR 22
+#define GATEWARE_MAJOR 23
 // The Minor version is auto-generated based on the current day of the year.
-#define GATEWARE_MINOR 296
+#define GATEWARE_MINOR 7
 // The Patch version is auto-generated based on the current UTC hour of the day.
-#define GATEWARE_PATCH 20
+#define GATEWARE_PATCH 0
 // Pulled directly from GIT  
 #define GATEWARE_BRANCH "master"
 // Pulled directly from GIT
-#define GATEWARE_COMMIT_HASH 0x636b27d
+#define GATEWARE_COMMIT_HASH 0x4111c4c
 // Standard Window Title Bar
-#define GATEWARE_VERSION_STRING "Gateware v22.296.20"
+#define GATEWARE_VERSION_STRING "Gateware v23.7.0"
 // Window Title Bar displayed in DEBUG builds
-#define GATEWARE_VERSION_STRING_LONG "Gateware v22.296.20 (master) [636b27d]"
+#define GATEWARE_VERSION_STRING_LONG "Gateware v23.7.0 (master) [4111c4c]"
 
 #endif
 
@@ -14423,19 +14391,19 @@ namespace GW
 static_assert(sizeof(void*) == 8, "Gateware supports x64 platforms only.");
 
 // The Major version is auto-generated based on the current year.
-#define GATEWARE_MAJOR 22
+#define GATEWARE_MAJOR 23
 // The Minor version is auto-generated based on the current day of the year.
-#define GATEWARE_MINOR 296
+#define GATEWARE_MINOR 7
 // The Patch version is auto-generated based on the current UTC hour of the day.
-#define GATEWARE_PATCH 20
+#define GATEWARE_PATCH 0
 // Pulled directly from GIT  
 #define GATEWARE_BRANCH "master"
 // Pulled directly from GIT
-#define GATEWARE_COMMIT_HASH 0x636b27d
+#define GATEWARE_COMMIT_HASH 0x4111c4c
 // Standard Window Title Bar
-#define GATEWARE_VERSION_STRING "Gateware v22.296.20"
+#define GATEWARE_VERSION_STRING "Gateware v23.7.0"
 // Window Title Bar displayed in DEBUG builds
-#define GATEWARE_VERSION_STRING_LONG "Gateware v22.296.20 (master) [636b27d]"
+#define GATEWARE_VERSION_STRING_LONG "Gateware v23.7.0 (master) [4111c4c]"
 
 #endif
 
@@ -57191,19 +57159,19 @@ namespace GW
 static_assert(sizeof(void*) == 8, "Gateware supports x64 platforms only.");
 
 // The Major version is auto-generated based on the current year.
-#define GATEWARE_MAJOR 22
+#define GATEWARE_MAJOR 23
 // The Minor version is auto-generated based on the current day of the year.
-#define GATEWARE_MINOR 296
+#define GATEWARE_MINOR 7
 // The Patch version is auto-generated based on the current UTC hour of the day.
-#define GATEWARE_PATCH 20
+#define GATEWARE_PATCH 0
 // Pulled directly from GIT  
 #define GATEWARE_BRANCH "master"
 // Pulled directly from GIT
-#define GATEWARE_COMMIT_HASH 0x636b27d
+#define GATEWARE_COMMIT_HASH 0x4111c4c
 // Standard Window Title Bar
-#define GATEWARE_VERSION_STRING "Gateware v22.296.20"
+#define GATEWARE_VERSION_STRING "Gateware v23.7.0"
 // Window Title Bar displayed in DEBUG builds
-#define GATEWARE_VERSION_STRING_LONG "Gateware v22.296.20 (master) [636b27d]"
+#define GATEWARE_VERSION_STRING_LONG "Gateware v23.7.0 (master) [4111c4c]"
 
 #endif
 

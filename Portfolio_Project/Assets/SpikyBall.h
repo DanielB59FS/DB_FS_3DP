@@ -21,11 +21,11 @@ const unsigned SpikyBall_indexcount = 3012;
 #define _SpikyBall_indexcount_
 #endif
 #ifndef _SpikyBall_materialcount_
-const unsigned SpikyBall_materialcount = 1; // can be used for batched draws
+const unsigned SpikyBall_materialcount = 3; // can be used for batched draws
 #define _SpikyBall_materialcount_
 #endif
 #ifndef _SpikyBall_meshcount_
-const unsigned SpikyBall_meshcount = 1;
+const unsigned SpikyBall_meshcount = 3;
 #define _SpikyBall_meshcount_
 #endif
 /************************************************/
@@ -1899,20 +1899,64 @@ typedef struct _OBJ_MATERIAL_
 #endif
 #ifndef _SpikyBall_materials_
 // Material Data follows: pulled from a .mtl file of the same name if present.
-const OBJ_MATERIAL SpikyBall_materials[1] =
+const OBJ_MATERIAL SpikyBall_materials[3] =
 {
 	{
-		{{ 0.600000f, 0.600000f, 0.600000f },
+		{{ 0.005107f, 0.021021f, 0.041773f },
 		1.000000f,
-		{ 0.200000f, 0.200000f, 0.200000f },
-		500.000000f,
+		{ 0.500000f, 0.500000f, 0.500000f },
+		96.078430f,
 		{ 1.000000f, 1.000000f, 1.000000f },
 		60.000000f,
 		{ 1.000000f, 1.000000f, 1.000000f },
-		1.500000f,
+		1.000000f,
 		{ 0.000000f, 0.000000f, 0.000000f },
 		2},
-		"default",
+		"Black",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+	},
+	{
+		{{ 0.236551f, 0.236551f, 0.236551f },
+		1.000000f,
+		{ 0.500000f, 0.500000f, 0.500000f },
+		96.078430f,
+		{ 1.000000f, 1.000000f, 1.000000f },
+		60.000000f,
+		{ 1.000000f, 1.000000f, 1.000000f },
+		1.000000f,
+		{ 0.000000f, 0.000000f, 0.000000f },
+		2},
+		"DarkMetal",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+	},
+	{
+		{{ 0.143087f, 0.143087f, 0.143087f },
+		1.000000f,
+		{ 0.500000f, 0.500000f, 0.500000f },
+		96.078430f,
+		{ 1.000000f, 1.000000f, 1.000000f },
+		60.000000f,
+		{ 1.000000f, 1.000000f, 1.000000f },
+		1.000000f,
+		{ 0.000000f, 0.000000f, 0.000000f },
+		2},
+		"Metal",
 		"",
 		"",
 		"",
@@ -1934,9 +1978,11 @@ const OBJ_MATERIAL SpikyBall_materials[1] =
 // Each entry corresponds to the same entry in the materials array above.
 // The two numbers provided are the IndexCount and the IndexOffset into the indices array.
 // If you need more fine grained control(ex: for transformations) use the OBJ_MESH data below.
-const unsigned int SpikyBall_batches[1][2] =
+const unsigned int SpikyBall_batches[3][2] =
 {
-	{ 3012, 0 },
+	{ 1140, 0 },
+	{ 864, 1140 },
+	{ 1008, 2004 },
 };
 #define _SpikyBall_batches_
 #endif
@@ -1953,13 +1999,25 @@ typedef struct _OBJ_MESH_
 #ifndef _SpikyBall_meshes_
 // Mesh Data follows: Meshes are .obj groups sorted & split by material.
 // Meshes are provided in sequential order, sorted by material first and name second.
-const OBJ_MESH SpikyBall_meshes[1] =
+const OBJ_MESH SpikyBall_meshes[3] =
 {
 	{
 		"default",
-		3012,
+		1140,
 		0,
 		0,
+	},
+	{
+		"default",
+		864,
+		1140,
+		1,
+	},
+	{
+		"default",
+		1008,
+		2004,
+		2,
 	},
 };
 #define _SpikyBall_meshes_

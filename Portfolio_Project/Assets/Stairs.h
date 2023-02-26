@@ -21,11 +21,11 @@ const unsigned Stairs_indexcount = 1320;
 #define _Stairs_indexcount_
 #endif
 #ifndef _Stairs_materialcount_
-const unsigned Stairs_materialcount = 1; // can be used for batched draws
+const unsigned Stairs_materialcount = 2; // can be used for batched draws
 #define _Stairs_materialcount_
 #endif
 #ifndef _Stairs_meshcount_
-const unsigned Stairs_meshcount = 1;
+const unsigned Stairs_meshcount = 2;
 #define _Stairs_meshcount_
 #endif
 /************************************************/
@@ -835,20 +835,42 @@ typedef struct _OBJ_MATERIAL_
 #endif
 #ifndef _Stairs_materials_
 // Material Data follows: pulled from a .mtl file of the same name if present.
-const OBJ_MATERIAL Stairs_materials[1] =
+const OBJ_MATERIAL Stairs_materials[2] =
 {
 	{
-		{{ 0.600000f, 0.600000f, 0.600000f },
+		{{ 0.300596f, 0.162337f, 0.046968f },
 		1.000000f,
-		{ 0.200000f, 0.200000f, 0.200000f },
-		500.000000f,
+		{ 0.500000f, 0.500000f, 0.500000f },
+		96.078430f,
 		{ 1.000000f, 1.000000f, 1.000000f },
 		60.000000f,
 		{ 1.000000f, 1.000000f, 1.000000f },
-		1.500000f,
+		1.000000f,
 		{ 0.000000f, 0.000000f, 0.000000f },
 		2},
-		"default",
+		"Wood",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+	},
+	{
+		{{ 0.430576f, 0.251731f, 0.069541f },
+		1.000000f,
+		{ 0.500000f, 0.500000f, 0.500000f },
+		96.078430f,
+		{ 1.000000f, 1.000000f, 1.000000f },
+		60.000000f,
+		{ 1.000000f, 1.000000f, 1.000000f },
+		1.000000f,
+		{ 0.000000f, 0.000000f, 0.000000f },
+		2},
+		"Wood_Light",
 		"",
 		"",
 		"",
@@ -870,9 +892,10 @@ const OBJ_MATERIAL Stairs_materials[1] =
 // Each entry corresponds to the same entry in the materials array above.
 // The two numbers provided are the IndexCount and the IndexOffset into the indices array.
 // If you need more fine grained control(ex: for transformations) use the OBJ_MESH data below.
-const unsigned int Stairs_batches[1][2] =
+const unsigned int Stairs_batches[2][2] =
 {
-	{ 1320, 0 },
+	{ 456, 0 },
+	{ 864, 456 },
 };
 #define _Stairs_batches_
 #endif
@@ -889,13 +912,19 @@ typedef struct _OBJ_MESH_
 #ifndef _Stairs_meshes_
 // Mesh Data follows: Meshes are .obj groups sorted & split by material.
 // Meshes are provided in sequential order, sorted by material first and name second.
-const OBJ_MESH Stairs_meshes[1] =
+const OBJ_MESH Stairs_meshes[2] =
 {
 	{
 		"default",
-		1320,
+		456,
 		0,
 		0,
+	},
+	{
+		"default",
+		864,
+		456,
+		1,
 	},
 };
 #define _Stairs_meshes_

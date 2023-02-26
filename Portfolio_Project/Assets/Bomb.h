@@ -21,11 +21,11 @@ const unsigned Bomb_indexcount = 2508;
 #define _Bomb_indexcount_
 #endif
 #ifndef _Bomb_materialcount_
-const unsigned Bomb_materialcount = 1; // can be used for batched draws
+const unsigned Bomb_materialcount = 3; // can be used for batched draws
 #define _Bomb_materialcount_
 #endif
 #ifndef _Bomb_meshcount_
-const unsigned Bomb_meshcount = 1;
+const unsigned Bomb_meshcount = 3;
 #define _Bomb_meshcount_
 #endif
 /************************************************/
@@ -1631,20 +1631,64 @@ typedef struct _OBJ_MATERIAL_
 #endif
 #ifndef _Bomb_materials_
 // Material Data follows: pulled from a .mtl file of the same name if present.
-const OBJ_MATERIAL Bomb_materials[1] =
+const OBJ_MATERIAL Bomb_materials[3] =
 {
 	{
-		{{ 0.600000f, 0.600000f, 0.600000f },
+		{{ 0.007214f, 0.007214f, 0.007214f },
 		1.000000f,
-		{ 0.200000f, 0.200000f, 0.200000f },
-		500.000000f,
+		{ 0.500000f, 0.500000f, 0.500000f },
+		96.078430f,
 		{ 1.000000f, 1.000000f, 1.000000f },
 		60.000000f,
 		{ 1.000000f, 1.000000f, 1.000000f },
-		1.500000f,
+		1.000000f,
 		{ 0.000000f, 0.000000f, 0.000000f },
 		2},
-		"default",
+		"Black",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+	},
+	{
+		{{ 0.236551f, 0.236551f, 0.236551f },
+		1.000000f,
+		{ 0.500000f, 0.500000f, 0.500000f },
+		96.078430f,
+		{ 1.000000f, 1.000000f, 1.000000f },
+		60.000000f,
+		{ 1.000000f, 1.000000f, 1.000000f },
+		1.000000f,
+		{ 0.000000f, 0.000000f, 0.000000f },
+		2},
+		"DarkMetal",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+	},
+	{
+		{{ 0.451838f, 0.474059f, 0.404914f },
+		1.000000f,
+		{ 0.500000f, 0.500000f, 0.500000f },
+		96.078430f,
+		{ 1.000000f, 1.000000f, 1.000000f },
+		60.000000f,
+		{ 1.000000f, 1.000000f, 1.000000f },
+		1.000000f,
+		{ 0.000000f, 0.000000f, 0.000000f },
+		2},
+		"White",
 		"",
 		"",
 		"",
@@ -1666,9 +1710,11 @@ const OBJ_MATERIAL Bomb_materials[1] =
 // Each entry corresponds to the same entry in the materials array above.
 // The two numbers provided are the IndexCount and the IndexOffset into the indices array.
 // If you need more fine grained control(ex: for transformations) use the OBJ_MESH data below.
-const unsigned int Bomb_batches[1][2] =
+const unsigned int Bomb_batches[3][2] =
 {
-	{ 2508, 0 },
+	{ 1083, 0 },
+	{ 285, 1083 },
+	{ 1140, 1368 },
 };
 #define _Bomb_batches_
 #endif
@@ -1685,13 +1731,25 @@ typedef struct _OBJ_MESH_
 #ifndef _Bomb_meshes_
 // Mesh Data follows: Meshes are .obj groups sorted & split by material.
 // Meshes are provided in sequential order, sorted by material first and name second.
-const OBJ_MESH Bomb_meshes[1] =
+const OBJ_MESH Bomb_meshes[3] =
 {
 	{
 		"default",
-		2508,
+		1083,
 		0,
 		0,
+	},
+	{
+		"default",
+		285,
+		1083,
+		1,
+	},
+	{
+		"default",
+		1140,
+		1368,
+		2,
 	},
 };
 #define _Bomb_meshes_
