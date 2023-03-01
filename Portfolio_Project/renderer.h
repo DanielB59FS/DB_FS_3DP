@@ -807,21 +807,14 @@ public:
 		for (auto instance : dataOrientedLoader.levelInstances) {
 			LevelData::LEVEL_MODEL& model = dataOrientedLoader.levelModels[instance.modelIndex];
 			
-			vars.mat_ID = model.materialStart;
+			for (size_t i = model.meshStart; i < model.meshStart + model.meshCount; ++i) {
+				H2B::MESH& mesh = dataOrientedLoader.levelMeshes[i];
+				vars.mat_ID = model.materialStart + dataOrientedLoader.levelMeshes[i].materialIndex;
 
-			vkCmdPushConstants(commandBuffer, pipelineLayout, VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_FRAGMENT_BIT, 0, sizeof(SHADER_VARS), &vars);
-
-			vkCmdDrawIndexed(commandBuffer, model.indexCount, instance.transformCount, model.indexStart, model.vertexStart, instance.transformStart);
-
-			//	planned solution for submesh material drawing:
-			//for (size_t i = model.meshStart; i < model.meshStart + model.meshCount; ++i) {
-			//	vars.mat_ID = dataOrientedLoader.levelMeshes[i].materialIndex;
-
-			//	vkCmdPushConstants(commandBuffer, pipelineLayout, VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_FRAGMENT_BIT, 0, sizeof(SHADER_VARS), &vars);
-			//	
-			//	//vkCmdDrawIndexed(commandBuffer, dataOrientedLoader.levelMeshes[i].drawInfo.indexCount, instance.transformCount, dataOrientedLoader.levelMeshes[i].drawInfo.indexOffset, model.vertexStart, instance.transformStart);
-			//	vkCmdDrawIndexed(commandBuffer, dataOrientedLoader.levelMeshes[i].drawInfo.indexCount, instance.transformCount, dataOrientedLoader.levelMeshes[i].drawInfo.indexOffset, model.vertexStart, instance.transformStart);
-			//}
+				vkCmdPushConstants(commandBuffer, pipelineLayout, VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_FRAGMENT_BIT, 0, sizeof(SHADER_VARS), &vars);
+				
+				vkCmdDrawIndexed(commandBuffer, mesh.drawInfo.indexCount, instance.transformCount, model.indexStart + mesh.drawInfo.indexOffset, model.vertexStart, instance.transformStart);
+			}
 		}
 	}
 
